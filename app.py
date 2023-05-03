@@ -74,6 +74,10 @@ st.markdown(hide, unsafe_allow_html=True)
 
 st.title("Dietary and Financial Restrictions")
 
+st.header("Menu")
+menu = st.text_area("Enter the menu items here:")
+
+
 st.header("Dietary Restrictions")
 gluten_free = st.checkbox("Gluten-Free")
 dairy_free = st.checkbox("Dairy-Free")
@@ -97,22 +101,22 @@ if st.button("Submit"):
 
 
 if input_text:
-    prompt = "Brainstorm ideas for "+str(input_text)
+    prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(financial_restrictions)+"\n Menu: " +str(menu)
     if prompt:
         openai.api_key = st.secrets["openaiKey"]
         response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=150)
-        brainstorming_output = response['choices'][0]['text']
+        meal_output = response['choices'][0]['text']
         today = datetime.today().strftime('%Y-%m-%d')
-        topic = "Brainstorming ideas for: "+input_text+"\n@Date: "+str(today)+"\n"+brainstorming_output
+        meal = meal_output
         
-        st.info(brainstorming_output)
+        st.info(meal_output)
         filename = "brainstorming_"+str(today)+".txt"
         btn = st.download_button(
             label="Download txt",
-            data=topic,
+            data=meal,
             file_name=filename
         )
-        fields = [input_text, brainstorming_output, str(today)]
+        fields = [input_text, meal_output, str(today)]
         # read local csv file
         r = pd.read_csv('./data/prompts.csv')
         if len(fields)!=0:
