@@ -37,45 +37,24 @@ if 'output' not in st.session_state:
 
 if st.session_state['output'] <=2:
     st.markdown("""
-    # Brainstorming Buddy
+    # Frisch Menu Meal Maker
     """)
     input_text = st.text_input("Brainstorm ideas for", disabled=False, placeholder="What's on your mind?")
     st.session_state['output'] = st.session_state['output'] + 1
+
+    ##make a check box form for dietary restrictions
+    st.markdown("""
+    # Dietary Restrictions
+    """)
+    st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+    st.markdown("""
+    ## Select all that apply
+    """)
+
+
 else:
     # input_text = st.text_input("Brainstorm ideas for", disabled=True)
     st.info("Thank you! Refresh for more brainstorming💡")
-    st.markdown('''
-    <a target="_blank" style="color: black" href="https://twitter.com/intent/tweet?text=I%20just%20used%20the%20Brainstorming%20Buddy%20streamlit%20helper%20tool%20by%20@nainia_ayoub!%0A%0Ahttps://brainstorming-buddy.streamlit.app/">
-        <button class="btn">
-            Tweet about this!
-        </button>
-    </a>
-    <style>
-    .btn{
-        display: inline-flex;
-        -moz-box-align: center;
-        align-items: center;
-        -moz-box-pack: center;
-        justify-content: center;
-        font-weight: 400;
-        padding: 0.25rem 0.75rem;
-        border-radius: 0.25rem;
-        margin: 0px;
-        line-height: 1.6;
-        color: #fff;
-        background-color: #00acee;
-        width: auto;
-        user-select: none;
-        border: 1px solid #00acee;
-        }
-    .btn:hover{
-        color: #00acee;
-        background-color: #fff;
-    }
-    </style>
-    ''',
-    unsafe_allow_html=True
-    )
 
 hide="""
 <style>
@@ -93,19 +72,30 @@ footer{
 """
 st.markdown(hide, unsafe_allow_html=True)
 
-# html(button, height=70, width=220)
-# st.markdown(
-#     """
-#     <style>
-#         iframe[width="220"] {
-#             position: fixed;
-#             bottom: 60px;
-#             right: 40px;
-#         }
-#     </style>
-#     """,
-#     unsafe_allow_html=True,
-# )
+st.title("Dietary and Financial Restrictions")
+
+st.header("Dietary Restrictions")
+gluten_free = st.checkbox("Gluten-Free")
+dairy_free = st.checkbox("Dairy-Free")
+nut_free = st.checkbox("Nut-Free")
+
+st.header("Financial Restrictions")
+price_range = st.radio("Choose your budget:", ("< $5", "$5-$10", "$10-$15"))
+
+if st.button("Submit"):
+    dietary_restrictions = {
+        "gluten_free": gluten_free,
+        "dairy_free": dairy_free,
+        "nut_free": nut_free
+    }
+
+    st.write("Your dietary restrictions:")
+    st.write(dietary_restrictions)
+
+    st.write("Your financial restrictions:")
+    st.write(price_range)
+
+
 if input_text:
     prompt = "Brainstorm ideas for "+str(input_text)
     if prompt:
