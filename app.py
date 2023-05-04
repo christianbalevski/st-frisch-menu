@@ -2,8 +2,8 @@ import streamlit as st
 import openai
 from datetime import datetime
 from streamlit.components.v1 import html
-import pandas as pd
-import csv
+# import pandas as pd
+# import csv
 st.set_page_config(page_title="Frisch Menu Meal Maker")
 
 
@@ -72,60 +72,112 @@ with st.sidebar:
 # """
 # st.markdown(hide, unsafe_allow_html=True)
 
-st.title("Dietary and Financial Restrictions")
+# st.title("Dietary and Financial Restrictions")
 
-st.header("Menu")
-menu = st.text_area("Enter the menu items here:")
-
-
-st.header("Dietary Restrictions")
-gluten_free = st.checkbox("Gluten-Free")
-dairy_free = st.checkbox("Dairy-Free")
-nut_free = st.checkbox("Nut-Free")
-
-st.header("Financial Restrictions")
-price_range = st.radio("Choose your budget:", ("< $5", "$5-$10", "$10-$15"))
-
-if st.button("Submit"):
-    dietary_restrictions = {
-        "gluten_free": gluten_free,
-        "dairy_free": dairy_free,
-        "nut_free": nut_free
-    }
-
-    st.write("Your dietary restrictions:")
-    st.write(dietary_restrictions)
-
-    st.write("Your financial restrictions:")
-    st.write(price_range)
+# st.header("Menu")
+# menu = st.text_area("Enter the menu items here:")
 
 
-if menu:
-    prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(price_range)+"\n Menu: " +str(menu)
-    if prompt:
-        openai.api_key = st.secrets["openaiKey"]
-        response = openai.Completion.create(engine="gpt-3.5-turbo", prompt=prompt, max_tokens=150)
-        meal_output = response['choices'][0]['text']
-        today = datetime.today().strftime('%Y-%m-%d')
-        meal = response
+# st.header("Dietary Restrictions")
+# gluten_free = st.checkbox("Gluten-Free")
+# dairy_free = st.checkbox("Dairy-Free")
+# nut_free = st.checkbox("Nut-Free")
+
+# st.header("Financial Restrictions")
+# price_range = st.radio("Choose your budget:", ("< $5", "$5-$10", "$10-$15"))
+
+# if st.button("Submit"):
+#     dietary_restrictions = {
+#         "gluten_free": gluten_free,
+#         "dairy_free": dairy_free,
+#         "nut_free": nut_free
+#     }
+
+#     st.write("Your dietary restrictions:")
+#     st.write(dietary_restrictions)
+
+#     st.write("Your financial restrictions:")
+#     st.write(price_range)
+
+
+# if menu:
+#     prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(price_range)+"\n Menu: " +str(menu)
+#     if prompt:
+#         openai.api_key = st.secrets["openaiKey"]
+#         response = openai.ChatCompletion.create(engine="gpt-3.5-turbo", prompt=prompt, max_tokens=300)
+#         meal_output = response['choices'][0]['text']
+#         today = datetime.today().strftime('%Y-%m-%d')
+#         meal = response
         
-        st.info(meal_output)
-        filename = "brainstorming_"+str(today)+".txt"
-        btn = st.download_button(
-            label="Download txt",
-            data=meal,
-            file_name=filename
-        )
-        fields = [prompt, meal_output, str(today)]
-        # read local csv file
-        r = pd.read_csv('./data/prompts.csv')
-        if len(fields)!=0:
-            with open('./data/prompts.csv', 'a', encoding='utf-8', newline='') as f:
-                # write to csv file (append mode)
-                writer = csv.writer(f, delimiter=',', lineterminator='\n')
-                writer.writerow(fields)
+#         st.info(meal_output)
+#         filename = "brainstorming_"+str(today)+".txt"
+#         btn = st.download_button(
+#             label="Download txt",
+#             data=meal,
+#             file_name=filename
+#         )
+#         fields = [prompt, meal_output, str(today)]
+#         # read local csv file
+#         r = pd.read_csv('./data/prompts.csv')
+#         if len(fields)!=0:
+#             with open('./data/prompts.csv', 'a', encoding='utf-8', newline='') as f:
+#                 # write to csv file (append mode)
+#                 writer = csv.writer(f, delimiter=',', lineterminator='\n')
+#                 writer.writerow(fields)
 
-        
-        
+# import os
+# import streamlit as st
+# import openai
 
-        
+# Set up the OpenAI API
+openai.api_key = st.secrets["openaiKey"]
+
+def generate_prompt(menu, dietary_restrictions, price_range):
+    # Create the prompt using the menu, dietary restrictions, and price range
+    prompt = f"Given a menu with the following items:\n{menu}\n\nFind suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this budget: {price_range}."
+    return prompt
+
+def call_openai_api(prompt):
+    response = openai.ChatCompletion.create(
+        engine="gpt-3.5-turbo",
+        prompt=prompt,
+        max_tokens=100,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    return response.choices[0].text.strip()
+
+def main():
+    st.title("Dietary and Financial Restrictions")
+
+    st.header("Menu")
+    menu = st.text_area("Enter the menu items here:")
+
+    st.header("Dietary Restrictions")
+    gluten_free = st.checkbox("Gluten-Free")
+    dairy_free = st.checkbox("Dairy-Free")
+    nut_free = st.checkbox("Nut-Free")
+
+    st.header("Financial Restrictions")
+    price_range = st.radio("Choose your budget:", ("< $5", "$5-$10", "$10-$15"))
+
+    if st.button("Submit"):
+        dietary_restrictions = {
+            "gluten_free": gluten_free,
+            "dairy_free": dairy_free,
+            "nut_free": nut_free
+        }
+
+        prompt = generate_prompt(menu, dietary_restrictions, price_range)
+        st.write("Generated prompt for GPT-3.5:")
+        st.write(prompt)
+
+        st.write("Calling GPT-3.5...")
+        response = call_openai_api(prompt)
+
+        st.write("GPT-3.5 response:")
+        st.write(response)
+
+if __name__ == "__main__":
+    main()
