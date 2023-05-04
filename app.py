@@ -104,10 +104,10 @@ if input_text:
     prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(financial_restrictions)+"\n Menu: " +str(menu)
     if prompt:
         openai.api_key = st.secrets["openaiKey"]
-        response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=150)
+        response = openai.Completion.create(engine="gpt-3.5-turbo", prompt=prompt, max_tokens=150)
         meal_output = response['choices'][0]['text']
         today = datetime.today().strftime('%Y-%m-%d')
-        meal = meal_output
+        meal = response
         
         st.info(meal_output)
         filename = "brainstorming_"+str(today)+".txt"
