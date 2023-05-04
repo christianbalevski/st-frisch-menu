@@ -132,21 +132,19 @@ with st.sidebar:
 # Set up the OpenAI API
 openai.api_key = st.secrets["openaiKey"]
 
-def generate_prompt(menu, dietary_restrictions, price_range):
-    # Create the prompt using the menu, dietary restrictions, and price range
-    prompt = f"Given a menu with the following items:\n{menu}\n\nFind suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this budget: {price_range}."
-    return prompt
+def generate_messages(menu, dietary_restrictions, price_range):
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": f"Given a menu with the following items:\n{menu}\n\nFind suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this budget: {price_range}."},
+    ]
+    return messages
 
-def call_openai_api(prompt):
+def call_openai_api(messages):
     response = openai.ChatCompletion.create(
-        engine="gpt-3.5-turbo",
-        prompt=prompt,
-        max_tokens=100,
-        n=1,
-        stop=None,
-        temperature=0.5,
+        model="gpt-3.5-turbo",
+        messages=messages,
     )
-    return response.choices[0].text.strip()
+    return response.choices[0].message['content']
 
 def main():
     st.title("Dietary and Financial Restrictions")
@@ -169,14 +167,14 @@ def main():
             "nut_free": nut_free
         }
 
-        prompt = generate_prompt(menu, dietary_restrictions, price_range)
+        prompt = generate_messages(menu, dietary_restrictions, price_range)
         st.write("Generated prompt for GPT-3.5:")
         st.write(prompt)
 
-        st.write("Calling GPT-3.5...")
+        st.write("Calling GPT-3.5 Turbo...")
         response = call_openai_api(prompt)
 
-        st.write("GPT-3.5 response:")
+        st.write("GPT-3.5 Turbo response:")
         st.write(response)
 
 if __name__ == "__main__":
