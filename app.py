@@ -146,6 +146,15 @@ def call_openai_api(messages):
         messages=messages,
     )
     return response.choices[0].message['content']
+def format_response(response):
+    # Replace unwanted characters and split the response into lines
+    lines = response.replace("−", "-").replace("�", "").split("\n")
+
+    # Clean up the lines by removing any extra spaces and empty lines
+    cleaned_lines = [line.strip() for line in lines if line.strip()]
+
+    # Join the cleaned lines with line breaks and return the formatted response
+    return "\n".join(cleaned_lines)
 
 def main():
     st.title("Dietary and Financial Restrictions")
@@ -175,8 +184,9 @@ def main():
         st.write("Calling GPT-3.5 Turbo...")
         response = call_openai_api(prompt)
 
-        st.write("GPT-3.5 Turbo response:")
-        st.write(response)
+        formatted_response = format_response(response)
+        st.write("Formatted GPT-3.5 Turbo response:")
+        st.write(formatted_response)
 
 if __name__ == "__main__":
     main()
