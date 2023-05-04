@@ -30,105 +30,6 @@ with st.sidebar:
     """)
     st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
 
-
-# input_text = None
-# if 'output' not in st.session_state:
-#     st.session_state['output'] = 0
-
-# if st.session_state['output'] <=2:
-#     st.markdown("""
-#     # Frisch Menu Meal Maker
-#     """)
-#     input_text = st.text_input("Brainstorm ideas for", disabled=False, placeholder="What's on your mind?")
-#     st.session_state['output'] = st.session_state['output'] + 1
-
-#     ##make a check box form for dietary restrictions
-#     st.markdown("""
-#     # Dietary Restrictions
-#     """)
-#     st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
-#     st.markdown("""
-#     ## Select all that apply
-#     """)
-
-
-# else:
-#     # input_text = st.text_input("Brainstorm ideas for", disabled=True)
-#     st.info("Thank you! Refresh for more brainstorming💡")
-
-# hide="""
-# <style>
-# footer{
-# 	visibility: hidden;
-#     position: relative;
-# }
-# .viewerBadge_container__1QSob{
-#     visibility: hidden;
-# }
-# #MainMenu{
-# 	visibility: hidden;
-# }
-# <style>
-# """
-# st.markdown(hide, unsafe_allow_html=True)
-
-# st.title("Dietary and Financial Restrictions")
-
-# st.header("Menu")
-# menu = st.text_area("Enter the menu items here:")
-
-
-# st.header("Dietary Restrictions")
-# gluten_free = st.checkbox("Gluten-Free")
-# dairy_free = st.checkbox("Dairy-Free")
-# nut_free = st.checkbox("Nut-Free")
-
-# st.header("Financial Restrictions")
-# price_range = st.radio("Choose your budget:", ("< $5", "$5-$10", "$10-$15"))
-
-# if st.button("Submit"):
-#     dietary_restrictions = {
-#         "gluten_free": gluten_free,
-#         "dairy_free": dairy_free,
-#         "nut_free": nut_free
-#     }
-
-#     st.write("Your dietary restrictions:")
-#     st.write(dietary_restrictions)
-
-#     st.write("Your financial restrictions:")
-#     st.write(price_range)
-
-
-# if menu:
-#     prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(price_range)+"\n Menu: " +str(menu)
-#     if prompt:
-#         openai.api_key = st.secrets["openaiKey"]
-#         response = openai.ChatCompletion.create(engine="gpt-3.5-turbo", prompt=prompt, max_tokens=300)
-#         meal_output = response['choices'][0]['text']
-#         today = datetime.today().strftime('%Y-%m-%d')
-#         meal = response
-        
-#         st.info(meal_output)
-#         filename = "brainstorming_"+str(today)+".txt"
-#         btn = st.download_button(
-#             label="Download txt",
-#             data=meal,
-#             file_name=filename
-#         )
-#         fields = [prompt, meal_output, str(today)]
-#         # read local csv file
-#         r = pd.read_csv('./data/prompts.csv')
-#         if len(fields)!=0:
-#             with open('./data/prompts.csv', 'a', encoding='utf-8', newline='') as f:
-#                 # write to csv file (append mode)
-#                 writer = csv.writer(f, delimiter=',', lineterminator='\n')
-#                 writer.writerow(fields)
-
-# import os
-# import streamlit as st
-# import openai
-
 # Set up the OpenAI API
 openai.api_key = st.secrets["openaiKey"]
 
@@ -167,6 +68,7 @@ def main():
     gluten_free = st.checkbox("Gluten-Free")
     dairy_free = st.checkbox("Dairy-Free")
     nut_free = st.checkbox("Nut-Free")
+    vegan = st.checkbox("Vegan")
 
     st.header("Financial Restrictions")
     price_range = st.radio("Choose your budget:", ("< $5", "$5-$10", "$10-$15"))
@@ -175,7 +77,8 @@ def main():
         dietary_restrictions = {
             "gluten_free": gluten_free,
             "dairy_free": dairy_free,
-            "nut_free": nut_free
+            "nut_free": nut_free,
+            "vegan": vegan
         }
 
         prompt = generate_messages(menu, dietary_restrictions, price_range)
