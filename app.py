@@ -180,7 +180,7 @@ def main():
 
         prompt = generate_messages(menu, dietary_restrictions, price_range)
         st.write("Generated prompt for GPT-3.5:")
-        st.write(prompt)
+        # st.write(prompt)
 
         st.write("Calling GPT-3.5 Turbo...")
         response = call_openai_api(prompt)
