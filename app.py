@@ -31,46 +31,46 @@ with st.sidebar:
     st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
 
 
-input_text = None
-if 'output' not in st.session_state:
-    st.session_state['output'] = 0
+# input_text = None
+# if 'output' not in st.session_state:
+#     st.session_state['output'] = 0
 
-if st.session_state['output'] <=2:
-    st.markdown("""
-    # Frisch Menu Meal Maker
-    """)
-    input_text = st.text_input("Brainstorm ideas for", disabled=False, placeholder="What's on your mind?")
-    st.session_state['output'] = st.session_state['output'] + 1
+# if st.session_state['output'] <=2:
+#     st.markdown("""
+#     # Frisch Menu Meal Maker
+#     """)
+#     input_text = st.text_input("Brainstorm ideas for", disabled=False, placeholder="What's on your mind?")
+#     st.session_state['output'] = st.session_state['output'] + 1
 
-    ##make a check box form for dietary restrictions
-    st.markdown("""
-    # Dietary Restrictions
-    """)
-    st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
-    st.markdown("""
-    ## Select all that apply
-    """)
+#     ##make a check box form for dietary restrictions
+#     st.markdown("""
+#     # Dietary Restrictions
+#     """)
+#     st.markdown(html_temp.format("rgba(55, 53, 47, 0.16)"),unsafe_allow_html=True)
+#     st.markdown("""
+#     ## Select all that apply
+#     """)
 
 
-else:
-    # input_text = st.text_input("Brainstorm ideas for", disabled=True)
-    st.info("Thank you! Refresh for more brainstorming💡")
+# else:
+#     # input_text = st.text_input("Brainstorm ideas for", disabled=True)
+#     st.info("Thank you! Refresh for more brainstorming💡")
 
-hide="""
-<style>
-footer{
-	visibility: hidden;
-    position: relative;
-}
-.viewerBadge_container__1QSob{
-    visibility: hidden;
-}
-#MainMenu{
-	visibility: hidden;
-}
-<style>
-"""
-st.markdown(hide, unsafe_allow_html=True)
+# hide="""
+# <style>
+# footer{
+# 	visibility: hidden;
+#     position: relative;
+# }
+# .viewerBadge_container__1QSob{
+#     visibility: hidden;
+# }
+# #MainMenu{
+# 	visibility: hidden;
+# }
+# <style>
+# """
+# st.markdown(hide, unsafe_allow_html=True)
 
 st.title("Dietary and Financial Restrictions")
 
