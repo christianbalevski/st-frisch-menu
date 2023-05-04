@@ -136,7 +136,7 @@ def generate_messages(menu, dietary_restrictions, price_range):
     messages = [
         {"role": "system", "content": "You are a helpful meal planning assistant."},
         {"role": "user", "content": f"Given a menu with the following items:\n{menu}\n\nFind suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this total budget: {price_range}. Do not apologise, do not refrence past responses. Just give the meal suggestions."},
-        {"role": "assistant", "content": "Based on your gluten-free and dairy-free requirements, you can choose the following items from the menu:\n Roasted Squash - $2.65\n White Rice - $2.65\nFish Taco (2) - $5.25\nLentil Soup - $2.65 (Gluten-free & Parve) \nYou can consider the following combination for your meal:\nFish Taco (2) - $5.25\nRoasted Squash - $2.65\nLentil Soup - $2.65\nTotal cost: $10.55\n\nThis meal should be under your budget of $12 and meet your gluten-free and dairy-free requirements. Additionally, the fish tacos will provide protein, while the roasted squash and lentil soup will offer a variety of nutrients."},
+        {"role": "assistant", "content": "The output should be in table format with the following columns: item, price, dietary restrictions, with total price for the meal at the bottom."},
     ]
     return messages
 
