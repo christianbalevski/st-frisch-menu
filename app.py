@@ -100,8 +100,8 @@ if st.button("Submit"):
     st.write(price_range)
 
 
-if input_text:
-    prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(financial_restrictions)+"\n Menu: " +str(menu)
+if menu:
+    prompt = "I am going to provide you a food menu and list of dietary and monetary restrictions, can you help me decide on a meal. Dietary restrictions: "+str(dietary_restrictions)+", financial restrictions: "+str(price_range)+"\n Menu: " +str(menu)
     if prompt:
         openai.api_key = st.secrets["openaiKey"]
         response = openai.Completion.create(engine="gpt-3.5-turbo", prompt=prompt, max_tokens=150)
@@ -116,7 +116,7 @@ if input_text:
             data=meal,
             file_name=filename
         )
-        fields = [input_text, meal_output, str(today)]
+        fields = [prompt, meal_output, str(today)]
         # read local csv file
         r = pd.read_csv('./data/prompts.csv')
         if len(fields)!=0:
