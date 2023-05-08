@@ -35,9 +35,9 @@ openai.api_key = st.secrets["openaiKey"]
 
 def generate_messages(menu, dietary_restrictions, price_range):
     messages = [
-        {"role": "system", "content": "You are a helpful meal planning assistant."},
+        {"role": "system", "content": "You are a helpful meal planning assistant. Make sure you follow the instructions carefully including gluten restrictions."},
         {"role": "user", "content": f"Given a menu with the following items:\n{menu}\n Other menu options to include pizza - $2.50 \n gluten free pizza - $6.00 \n salad bar - price varies \n sushi gluten free, $8.50 \n\n. Find suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this total budget: {price_range}. Do not apologise, do not refrence past responses. Just give the meal suggestions."},
-        {"role": "assistant", "content": "The output should be in table format with the following columns: item, price, dietary restrictions, with total price for the meal at the bottom. Items not gluten free include: pasta, mac & cheese, couscous, toast, impossible burger, salmon burger."},
+        {"role": "assistant", "content": "The output should be in table format with the following columns: item, price, dietary restrictions, with total price for the meal at the bottom. Items not gluten free include: pasta, mac & cheese, couscous, toast, impossible burger, salmon burger, cheese quesadilla."},
     ]
     return messages
 
