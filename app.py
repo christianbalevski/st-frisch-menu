@@ -36,8 +36,8 @@ openai.api_key = st.secrets["openaiKey"]
 def generate_messages(menu, dietary_restrictions, price_range):
     messages = [
         {"role": "system", "content": "You are a helpful meal planning assistant."},
-        {"role": "user", "content": f"Given a menu with the following items:\n{menu}\n\nFind suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this total budget: {price_range}. Do not apologise, do not refrence past responses. Just give the meal suggestions."},
-        {"role": "assistant", "content": "The output should be in table format with the following columns: item, price, dietary restrictions, with total price for the meal at the bottom."},
+        {"role": "user", "content": f"Given a menu with the following items:\n{menu}\n\n. Other menu options to include pizza - $2.50, gluten free pizza - $6.00, salad bar - price varies, sushi, gluten free, $8.50.Find suitable options for someone with these dietary restrictions: {', '.join([k for k, v in dietary_restrictions.items() if v])} and within this total budget: {price_range}. Do not apologise, do not refrence past responses. Just give the meal suggestions."},
+        {"role": "assistant", "content": "The output should be in table format with the following columns: item, price, dietary restrictions, with total price for the meal at the bottom. Also, any kind of pasta dish is not gluten free unless explicitly stated. Pank is not gluten free either."},
     ]
     return messages
 
